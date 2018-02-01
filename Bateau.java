@@ -8,4 +8,12 @@ public abstract class Bateau
     int y;
     // 0 for Horizontal, 1 for Vertical
     int orientation;
+    int lifePoint = 2;
+
+    public int getHurt(){
+        lifePoint--;
+        if (lifePoint==0){
+            return 0;
+        }else return 1;
+    }
 }
