@@ -1,13 +1,9 @@
 public abstract class Bateau
 {
+    String name;
     int cases;
     int shootingRange;
     // lowest abscissa
-    int x;
-    // lowest ordinate
-    int y;
-    // 0 for Horizontal, 1 for Vertical
-    int orientation;
     int lifePoint = 2;
 
     public int getHurt(){

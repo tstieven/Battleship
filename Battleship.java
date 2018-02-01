@@ -7,6 +7,9 @@ public class Battleship {
     }
 
     private static void game(int a){
+        new GameBoard();
+        // "2" for test
+        GameBoard.init("2");
 
 
     }

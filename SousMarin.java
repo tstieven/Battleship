@@ -1,9 +1,7 @@
 public class SousMarin extends Bateau {
-    SousMarin(int x, int y , int orientation){
+    SousMarin(){
+        name = "SousMarin";
         cases = 3;
         shootingRange=4;
-        this.x = x;
-        this.y = y;
-        this.orientation = orientation;
     }
 }
