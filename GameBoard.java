@@ -90,6 +90,7 @@ public class GameBoard {
             case 2: return new PorteAvion();
             case 3: return new SousMarin();
             case 4: return new Torpilleur();
+            default: return null;
         }
     }
 
