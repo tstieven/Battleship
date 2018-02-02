@@ -1,13 +1,15 @@
 import java.util.HashMap;
 import java.util.Scanner;
 
+import static java.lang.Math.abs;
+
 public class GameBoard {
 
     //min and max values for x and y
-    static private int min = -10;
-    static private int max = 10;
+    static private int min = -5;
+    static private int max = 5;
 
-    static Bateau[][] gameBoardArray = new Bateau[max - min][max - min];
+    static Bateau[][] gameBoardArray = new Bateau[max + abs(min)][max + abs(min)];
 
     static HashMap<String, Bateau> player1Boat = new HashMap<String, Bateau>();
     static HashMap<String, Bateau> player2Boat = new HashMap<String, Bateau>();
@@ -130,18 +132,18 @@ public class GameBoard {
         return orientation;
     }
 
-    private static Bateau createBoat(int nbr) {
+    private static Bateau createBoat(int nbr, int player) {
         switch (nbr) {
             case 0:
-                return new ContreTorpilleur();
+                return new ContreTorpilleur(player);
             case 1:
-                return new Croiseur();
+                return new Croiseur(player);
             case 2:
-                return new PorteAvion();
+                return new PorteAvion(player);
             case 3:
-                return new SousMarin();
+                return new SousMarin(player);
             case 4:
-                return new Torpilleur();
+                return new Torpilleur(player);
             default:
                 return null;
         }
@@ -154,7 +156,7 @@ public class GameBoard {
         if (orientation == 0) {
             int i ;
             for (i = x; i < x + length; i++) {
-                if ((i <= max) && (i >= min)) {
+                if ((i <= max + abs(min)) && (i >= 0)) {
                     if (gameBoardArray[i][y] != null) {
                         free = false;
                     }
@@ -170,7 +172,7 @@ public class GameBoard {
         } else {
             int i ;
             for (i = y; i < y + length; i++) {
-                if ((i <= max) && (i >= min)) {
+                if ((i < max + abs(min)) && (i >= 0)) {
                     if (gameBoardArray[x][i] != null) {
                         free = false;
                     }
@@ -187,6 +189,27 @@ public class GameBoard {
         return free;
     }
 
+    public static void display() {
+        String displayString;
+        for (int j = max + abs(min) -1; j > -1; j--) {
+            displayString = "";
+                for (int i = 0; i < max + abs(min); i++) {
+                    if (gameBoardArray[i][j/2] == null) {
+                        displayString += "| 0 |";
+                    } else {
+                        if (gameBoardArray[i][j].player == 0) {
+                            displayString += "| 1 |";
+                        } else {
+                            displayString += "| 2 |";
+                        }
+                    }
+                }
+
+
+            print(displayString);
+        }
+    }
+
     // a is equals to the number of players
     public static void init(String a) {
         int nbr = -1;
@@ -199,18 +222,20 @@ public class GameBoard {
                 nbr = boatChoice(player, sc);
                 boolean posChoiceNotOk = true;
                 while (posChoiceNotOk) {
-                    int x = positionChoice("x", sc);
-                    int y = positionChoice("y", sc);
+                    int x = positionChoice("x", sc) + abs(min);
+                    int y = positionChoice("y", sc) + abs(min);
                     int orientation = orientationChoice(sc);
-                    if (testLocation(x, y, orientation, createBoat(nbr))) {
+                    Bateau boat = createBoat(nbr,player);
+                    if (testLocation(x, y, orientation, boat)) {
                         if (player == 0) {
-                            player1Boat.put(boatNameList[nbr], createBoat(nbr));
+                            player1Boat.put(boatNameList[nbr], boat);
                         } else {
-                            player2Boat.put(boatNameList[nbr], createBoat(nbr));
+                            player2Boat.put(boatNameList[nbr], boat);
                         }
                         boatLeft--;
                         player = (player + 1) % 2;
                         posChoiceNotOk = false;
+                        display();
                     } else {
                         print("position du bateau deja prise ou hors du terrain");
                     }
