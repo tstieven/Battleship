@@ -1,6 +1,5 @@
 public abstract class Bateau
 {
-    String name;
     int cases;
     int shootingRange;
     int player;

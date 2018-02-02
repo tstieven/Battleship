@@ -9,7 +9,9 @@ public class Battleship {
     private static void game(int a){
         new GameBoard();
         // "2" for test
+        //"1" will be available if we make a bot
         GameBoard.init("2");
+
 
 
     }
