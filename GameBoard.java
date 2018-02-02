@@ -243,4 +243,9 @@ public class GameBoard {
             }
         }
     }
+
+    //TODO move
+
+    //TODO shoot
+    //inside shoot function, verify if the game is over
 }

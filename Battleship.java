@@ -11,7 +11,7 @@ public class Battleship {
         // "2" for test
         //"1" will be available if we make a bot
         GameBoard.init("2");
-
+        //TODO Gameloop
 
 
     }
