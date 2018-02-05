@@ -9,10 +9,10 @@ public class GameBoard {
     static private int min = 0;
     static private int max = 10;
 
-    static Bateau[][] gameBoardArray = new Bateau[max + abs(min)][max + abs(min)];
+    static public Bateau[][] gameBoardArray = new Bateau[max + abs(min)][max + abs(min)];
 
-    static HashMap<String, Bateau> player1Boat = new HashMap<String, Bateau>();
-    static HashMap<String, Bateau> player2Boat = new HashMap<String, Bateau>();
+    static public HashMap<String, Bateau> player1Boat = new HashMap<>();
+    static public HashMap<String, Bateau> player2Boat = new HashMap<>();
 
     private static String[] boatNameList = {"ContreTorpilleur", "Croiseur", "Porte Avion", "Sous-Marin", "Torpilleur"};
     private static String[] orientationList = {"Horizontal", "Vertical"};
@@ -238,7 +238,7 @@ public class GameBoard {
         Scanner sc = new Scanner(System.in);
         if (a.equals("2")) {
             int player = 0;
-            int boatLeft = 2;
+            int boatLeft = 10;
             while (boatLeft != 0) {
                 print("il reste " + boatLeft + " a placer");
                 nbr = boatChoice(player, sc);
@@ -308,7 +308,7 @@ public class GameBoard {
                 }
             }
 
-            if (boat.alive == false){
+            if (!boat.alive){
                 choiceDone = 0;
                 print("Le bateau que vous avez choisi a deja ete coule");
             }
@@ -370,7 +370,7 @@ public class GameBoard {
         }
         print(player2Boat.get("Porte Avion").alive);
         if (player2Boat.get("Porte Avion").alive){
-            isPlayer1Alive = true;
+            isPlayer2Alive = true;
         }
 
         if (isPlayer1Alive && isPlayer2Alive) {
