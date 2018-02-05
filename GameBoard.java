@@ -268,6 +268,139 @@ public class GameBoard {
     }
 
     //TODO move
+    public static void move(int player){
+
+
+        Scanner sc = new Scanner(System.in);
+        print("Voulez vous bouger un bateau? (Oui 1/ Non 0)");
+        int movement = sc.nextInt();
+        if(movement == 1) {
+
+            Bateau boat = null;
+            String boatName;
+
+            int choiceDone = 0;
+            while (choiceDone == 0) {
+                print("Quel bateau voulez vous bouger?");
+                displayBoatList();
+                boatName = boatNameList[sc.nextInt()];
+                int safeChoiceDone = 0;
+
+                while (safeChoiceDone == 0) {
+                    print("vous avez choisi " + boatName + " etes vous sur de votre choix ? (1 pour oui 0 pour non)");
+                    switch (sc.next()) {
+                        case "0":
+                            safeChoiceDone = 1;
+                            break;
+                        case "1":
+                            safeChoiceDone = 1;
+                            choiceDone = 1;
+                            break;
+                    }
+                }
+
+                if (player == 0) {
+                    boat = player1Boat.get(boatName);
+                } else {
+                    if (player == 1) {
+                        boat = player2Boat.get(boatName);
+                    } else {
+                        print("pas un joueur possible");
+                        System.exit(1);
+                    }
+                }
+                if (boat.alive == false) {
+                    choiceDone = 0;
+                    print("Le bateau que vous avez choisi a deja ete coule");
+                }
+            }
+            int i = 2;
+            while(i<0) {
+                Bateau tempBoat = new Bateau();
+                tempBoat = boat;
+                for(int i=0; i<boat.pos.length; i++){
+                    gameBoardArray[boat.pos[i][0]][ boat.pos[i][1]] = null;
+                }
+                print("Il vous reste " + i + "mouvement. Que voules vous faire? (Bouger 0/ Orienter 1/ RIEN)");
+                switch(sc.next()){
+                    case "0":
+                        boatMove(boat, sc);
+                        break;
+                    case"1":
+                        boatOrientation(boat, sc);
+                        break;
+                    default:
+                        break;
+
+                }
+
+                if(!testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientation, boat)){
+                    boat = tempBoat;
+                    testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientation, boat);
+                    print("Ce mouvement est obstrué")
+
+                }
+                else{
+                    i--;
+                }
+
+            }
+        }
+
+    }
+
+    public static void boatMove(Bateau boat, Scanner sc){
+
+        boolean badDirection = true;
+        while(badDirection){
+
+            badDirection = false;
+            print("Dans quel direction voulez vous bouger votre bateau? (HAUT / BAS / DROITE / GAUCHE ) ");
+            switch (sc.next()){
+                case "HAUT":
+                    for(int i=0; i<boat.pos.length; i++){
+                        boat.pos[i][1]++;
+                    }
+                   break;
+                case "BAS":
+                    for(int i=0; i<boat.pos.length; i++){
+                        boat.pos[i][1]--;
+                    }
+                    break;
+                case "DROITE":
+                    for(int i=0; i<boat.pos.length; i++){
+                        boat.pos[i][0]++
+                    }
+                    break;
+                case "GAUCHE":
+                    for(int i=0; i<boat.pos.length; i++){
+                        boat.pos[i][0]--;
+                    }
+                    break;
+                default:
+                    print("Ceci n'est pas une direction...");
+                    badDirection = true;
+                    break;
+
+            }
+
+        }
+
+    }
+
+    public static void boatOrientation(Bateau boat, Scanner sc){
+
+        switch(orientationChoice(sc)) {
+            case "1":
+                boat.orientation = "v";
+                break;
+            case "0":
+                boat.orientation = "h";
+                break;
+        }
+
+    }
+
 
     //TODO shoot
     //inside shoot function, verify if the game is over
