@@ -6,8 +6,8 @@ import static java.lang.Math.abs;
 public class GameBoard {
 
     //min and max values for x and y
-    static private int min = -5;
-    static private int max = 5;
+    static private int min = 0;
+    static private int max = 10;
 
     static Bateau[][] gameBoardArray = new Bateau[max + abs(min)][max + abs(min)];
 
@@ -22,6 +22,12 @@ public class GameBoard {
         System.out.println(a);
     }
 
+    private static void displayBoatList(){
+        for (int i =0 ; i< boatNameList.length; i++){
+            print( i + " pour " + boatNameList[i]);
+        }
+    }
+
     private static int boatChoice(int player, Scanner sc) {
         int choiceDone = 0;
         int nbr = -1;
@@ -29,9 +35,10 @@ public class GameBoard {
             nbr = -1;
             boolean nbrNotOk = true;
             while (nbrNotOk) {
-                print("joueur " + (player + 1) + " choisissez un bateau (1 à 5)");
+                print("joueur " + (player + 1) + " choisissez un bateau (0 à 4)");
+                displayBoatList();
                 // -48 for Ascii conversion, -1 in order to avec nbr between 0 and 4
-                nbr = sc.next().charAt(0) - 49;
+                nbr = sc.nextInt();
                 if ((nbr < 5) && (nbr > -1)) {
                     if (player == 0) {
                         if (player1Boat.isEmpty()) {
@@ -265,7 +272,7 @@ public class GameBoard {
     //TODO shoot
     //inside shoot function, verify if the game is over
 
-    public static void shoot(int player){
+    public static int shoot(int player){
 
         String boatName = "";
 
@@ -273,15 +280,10 @@ public class GameBoard {
         Scanner sc = new Scanner(System.in);
         int choiceDone = 0;
         while (choiceDone == 0) {
-            print("what boat do you want in");
-            print("0 for" + boatNameList[0]);
-            print("1 for" + boatNameList[1]);
-            print("2 for" + boatNameList[2]);
-            print("3 for" +boatNameList[3]);
-            print("4 for" + boatNameList[4]);
+            print("Quel bateau voulez vous utiliser?");
+            displayBoatList();
             boatName = boatNameList[sc.nextInt()];
             int safeChoiceDone = 0;
-
 
             while (safeChoiceDone == 0) {
                 print("vous avez choisi " + boatName + " etes vous sur de votre choix ? (1 pour oui 0 pour non)");
@@ -301,13 +303,14 @@ public class GameBoard {
                 if (player == 1 ){
                     boat = player2Boat.get(boatName);
                 }else{
-                    print("not an actual player");
+                    print("pas un joueur possible");
                     System.exit(1);
                 }
             }
 
             if (boat.alive == false){
                 choiceDone = 0;
+                print("Le bateau que vous avez choisi a deja ete coule");
             }
 
         }
@@ -317,12 +320,12 @@ public class GameBoard {
         int posValid = 0 ;
 
         while (posValid ==0) {
-
-            entryInt(x,"abcix  to shoot between 0-10");
-            entryInt(y,"ordinate to shoot between 0-10");
-
+            x = entryInt("abcisse à viser entre 0-9");
+            y = entryInt("ordonnée à viser entre 0-9");
+            print(x+" "+y);
             int[][] posRange = boat.boatInRange();
             for (int k = 0; k < posRange.length; k++){
+                System.out.println(posRange[k][0] + " " + posRange[k][1]);
                 if (x == posRange[k][0] && y == posRange[k][1]){
                     posValid = 1 ;
 
@@ -335,39 +338,55 @@ public class GameBoard {
         int posPlayer = gameBoardArray[x][y].player;
         if ((posPlayer+player)%2 ==1){
             gameBoardArray[x][y].getHurt();
+            if (isFinished()){
+                print("bravo, vous avez gagné");
+                return 1;
+            }
+        }else{
+            //move();
         }
+
+        return 0;
 
     }
 
-    public static void entryString ( String a,String name){
-        Scanner sc = new Scanner(System.in);
-        int choiceDone = 0;
-        while (choiceDone == 0) {
-            print("what " + name + " do you want");
-            a = sc.nextLine();
-            int safeChoiceDone = 0;
+    public static boolean isFinished(){
 
-
-            while (safeChoiceDone == 0) {
-                print("vous avez choisi " + a + " etes vous sur de votre choix ? (1 pour oui 0 pour non)");
-                switch (sc.next()) {
-                    case "0":
-                        safeChoiceDone = 1;
-                        break;
-                    case "1":
-                        safeChoiceDone = 1;
-                        choiceDone = 1;
-                        break;
-                }
+        boolean isPlayer1Alive = false;
+        boolean isPlayer2Alive = false;
+        /*for (int i = 0; i < boatNameList.length ; i++){
+            if (player1Boat.get(boatNameList[i]).alive){
+                isPlayer1Alive = true;
             }
         }
+        for (int i = 0; i < boatNameList.length ; i++){
+            if (player2Boat.get(boatNameList[i]).alive){
+                isPlayer2Alive = true;
+            }
+        }*/
+
+        if (player1Boat.get("ContreTorpilleur").alive){
+            isPlayer1Alive = true;
+        }
+        print(player2Boat.get("Porte Avion").alive);
+        if (player2Boat.get("Porte Avion").alive){
+            isPlayer1Alive = true;
+        }
+
+        if (isPlayer1Alive && isPlayer2Alive) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
-    public static void entryInt ( int a,String name){
+    public static int entryInt ( String name){
+        int a = 0;
         Scanner sc = new Scanner(System.in);
         int choiceDone = 0;
         while (choiceDone == 0) {
-            print("what " + name +" do you want?");
+            print("Entrez le " + name +" que vous désirez?");
             a = sc.nextInt();
             int safeChoiceDone = 0;
 
@@ -385,6 +404,7 @@ public class GameBoard {
                 }
             }
         }
+        return a;
     }
 
 }

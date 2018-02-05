@@ -11,10 +11,12 @@ public class Battleship {
         // "2" for test
         //"1" will be available if we make a bot
         GameBoard.init("2");
+        int isFinished = 0;
+        int actualPlayer = 0;
+        while (isFinished == 0 ){
 
-        while (true){
-            GameBoard.shoot(0);
-            GameBoard.shoot(1);
+            isFinished = GameBoard.shoot(actualPlayer);
+            actualPlayer = (actualPlayer +1)%2;
         }
         //TODO Gameloop
 

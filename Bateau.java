@@ -16,7 +16,7 @@ public abstract class Bateau
     public int getHurt(){
         lifePoint--;
 
-        System.out.println("You Touched a " + Bateau.class.getName());
+        System.out.println("You Touched a " + this.getClass());
         if (lifePoint==0){
             alive = false;
             return 0;
