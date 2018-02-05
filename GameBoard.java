@@ -165,8 +165,13 @@ public class GameBoard {
                 }
             }
             if (free) {
+                int j = 0;
                 for (i = x; i < x + length; i++) {
                     gameBoardArray[i][y] = boat;
+                    boat.pos[j][0] = i;
+                    boat.pos[j][1] = y;
+                    boat.orientation = 'h';
+                    j++;
                 }
             }
         } else {
@@ -181,20 +186,28 @@ public class GameBoard {
                 }
             }
             if (free) {
+                int j = 0;
                 for (i = y; i < y + length; i++) {
                     gameBoardArray[x][i] = boat;
+                    boat.pos[j][0] = x;
+                    boat.pos[j][1] = i;
+                    boat.orientation = 'v';
+                    j++;
                 }
             }
         }
         return free;
     }
 
+
+
+
     public static void display() {
         String displayString;
         for (int j = max + abs(min) -1; j > -1; j--) {
             displayString = "";
                 for (int i = 0; i < max + abs(min); i++) {
-                    if (gameBoardArray[i][j/2] == null) {
+                    if (gameBoardArray[i][j] == null) {
                         displayString += "| 0 |";
                     } else {
                         if (gameBoardArray[i][j].player == 0) {
@@ -210,13 +223,15 @@ public class GameBoard {
         }
     }
 
+
+
     // a is equals to the number of players
     public static void init(String a) {
         int nbr = -1;
         Scanner sc = new Scanner(System.in);
         if (a.equals("2")) {
             int player = 0;
-            int boatLeft = 10;
+            int boatLeft = 2;
             while (boatLeft != 0) {
                 print("il reste " + boatLeft + " a placer");
                 nbr = boatChoice(player, sc);
@@ -235,6 +250,7 @@ public class GameBoard {
                         boatLeft--;
                         player = (player + 1) % 2;
                         posChoiceNotOk = false;
+                        boat.boatInRange();
                         display();
                     } else {
                         print("position du bateau deja prise ou hors du terrain");
@@ -248,4 +264,127 @@ public class GameBoard {
 
     //TODO shoot
     //inside shoot function, verify if the game is over
+
+    public static void shoot(int player){
+
+        String boatName = "";
+
+        Bateau boat = null;
+        Scanner sc = new Scanner(System.in);
+        int choiceDone = 0;
+        while (choiceDone == 0) {
+            print("what boat do you want in");
+            print("0 for" + boatNameList[0]);
+            print("1 for" + boatNameList[1]);
+            print("2 for" + boatNameList[2]);
+            print("3 for" +boatNameList[3]);
+            print("4 for" + boatNameList[4]);
+            boatName = boatNameList[sc.nextInt()];
+            int safeChoiceDone = 0;
+
+
+            while (safeChoiceDone == 0) {
+                print("vous avez choisi " + boatName + " etes vous sur de votre choix ? (1 pour oui 0 pour non)");
+                switch (sc.next()) {
+                    case "0":
+                        safeChoiceDone = 1;
+                        break;
+                    case "1":
+                        safeChoiceDone = 1;
+                        choiceDone = 1;
+                        break;
+                }
+            }
+            if (player == 0){
+                boat = player1Boat.get(boatName);
+            }else {
+                if (player == 1 ){
+                    boat = player2Boat.get(boatName);
+                }else{
+                    print("not an actual player");
+                    System.exit(1);
+                }
+            }
+
+            if (boat.alive == false){
+                choiceDone = 0;
+            }
+
+        }
+
+
+        int x= 0,y = 0 ;
+        int posValid = 0 ;
+
+        while (posValid ==0) {
+
+            entryInt(x,"abcix  to shoot between 0-10");
+            entryInt(y,"ordinate to shoot between 0-10");
+
+            int[][] posRange = boat.boatInRange();
+            for (int k = 0; k < posRange.length; k++){
+                if (x == posRange[k][0] && y == posRange[k][1]){
+                    posValid = 1 ;
+
+                    break;
+                }
+            }
+            print(posValid);
+        }
+
+        int posPlayer = gameBoardArray[x][y].player;
+        if ((posPlayer+player)%2 ==1){
+            gameBoardArray[x][y].getHurt();
+        }
+
+    }
+
+    public static void entryString ( String a,String name){
+        Scanner sc = new Scanner(System.in);
+        int choiceDone = 0;
+        while (choiceDone == 0) {
+            print("what " + name + " do you want");
+            a = sc.nextLine();
+            int safeChoiceDone = 0;
+
+
+            while (safeChoiceDone == 0) {
+                print("vous avez choisi " + a + " etes vous sur de votre choix ? (1 pour oui 0 pour non)");
+                switch (sc.next()) {
+                    case "0":
+                        safeChoiceDone = 1;
+                        break;
+                    case "1":
+                        safeChoiceDone = 1;
+                        choiceDone = 1;
+                        break;
+                }
+            }
+        }
+    }
+
+    public static void entryInt ( int a,String name){
+        Scanner sc = new Scanner(System.in);
+        int choiceDone = 0;
+        while (choiceDone == 0) {
+            print("what " + name +" do you want?");
+            a = sc.nextInt();
+            int safeChoiceDone = 0;
+
+
+            while (safeChoiceDone == 0) {
+                print("vous avez choisi " + a + " etes vous sur de votre choix ? (1 pour oui 0 pour non)");
+                switch (sc.next()) {
+                    case "0":
+                        safeChoiceDone = 1;
+                        break;
+                    case "1":
+                        safeChoiceDone = 1;
+                        choiceDone = 1;
+                        break;
+                }
+            }
+        }
+    }
+
 }
