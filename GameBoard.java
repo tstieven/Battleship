@@ -238,7 +238,7 @@ public class GameBoard {
         Scanner sc = new Scanner(System.in);
         if (a.equals("2")) {
             int player = 0;
-            int boatLeft = 2;
+            int boatLeft = 10;
             while (boatLeft != 0) {
                 print("il reste " + boatLeft + " a placer");
                 nbr = boatChoice(player, sc);
@@ -491,7 +491,7 @@ public class GameBoard {
 
         boolean isPlayer1Alive = false;
         boolean isPlayer2Alive = false;
-       /* for (int i = 0; i < boatNameList.length ; i++){
+        for (int i = 0; i < boatNameList.length ; i++){
             if (player1Boat.get(boatNameList[i]).alive){
                 isPlayer1Alive = true;
             }
@@ -500,8 +500,8 @@ public class GameBoard {
             if (player2Boat.get(boatNameList[i]).alive){
                 isPlayer2Alive = true;
             }
-        }*/
-
+        }
+/*
         if (player1Boat.get("ContreTorpilleur").alive){
             isPlayer1Alive = true;
         }
@@ -509,7 +509,7 @@ public class GameBoard {
         if (player2Boat.get("Porte Avion").alive){
             isPlayer2Alive = true;
         }
-
+*/
         if (isPlayer1Alive && isPlayer2Alive) {
             return false;
         } else {
