@@ -238,7 +238,7 @@ public class GameBoard {
         Scanner sc = new Scanner(System.in);
         if (a.equals("2")) {
             int player = 0;
-            int boatLeft = 10;
+            int boatLeft = 2;
             while (boatLeft != 0) {
                 print("il reste " + boatLeft + " a placer");
                 nbr = boatChoice(player, sc);
@@ -315,10 +315,10 @@ public class GameBoard {
                 }
             }
             int mvPossible = 2;
-            while(mvPossible<0) {
+            while(mvPossible>0) {
                 Bateau tempBoat = boat.copy();
                 for(int k=0; k<boat.pos.length; k++){
-                    gameBoardArray[boat.pos[mvPossible][0]][ boat.pos[mvPossible][1]] = null;
+                    gameBoardArray[boat.pos[k][0]][ boat.pos[k][1]] = null;
                 }
                 print("Il vous reste " + mvPossible + "mouvement. Que voules vous faire? (Bouger 0/ Orienter 1/ RIEN)");
                 switch(sc.next()){
@@ -329,17 +329,19 @@ public class GameBoard {
                         boatOrientation(boat, sc);
                         break;
                     default:
+                        mvPossible = 0;
                         break;
 
                 }
 
                 if(!testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientation, boat)){
-                    boat = tempBoat;
+                    boat = tempBoat.copy();
                     testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientation, boat);
                     print("Ce mouvement est obstrué");
 
                 }
                 else{
+                    display();
                     mvPossible--;
                 }
 
@@ -467,15 +469,17 @@ public class GameBoard {
             print(posValid);
         }
 
-        int posPlayer = gameBoardArray[x][y].player;
-        if ((posPlayer+player)%2 ==1){
-            gameBoardArray[x][y].getHurt();
-            if (isFinished()){
-                print("bravo, vous avez gagné");
-                return 1;
+        if (gameBoardArray[x][y] != null) {
+            int posPlayer = gameBoardArray[x][y].player;
+            if ((posPlayer + player) % 2 == 1) {
+                gameBoardArray[x][y].getHurt();
+                if (isFinished()) {
+                    print("bravo, vous avez gagné");
+                    return 1;
+                }
             }
-        }else{
-            int otherPlayer = (player +1)%2;
+        }else {
+            int otherPlayer = (player + 1) % 2;
             move(otherPlayer);
         }
 
@@ -487,7 +491,7 @@ public class GameBoard {
 
         boolean isPlayer1Alive = false;
         boolean isPlayer2Alive = false;
-        for (int i = 0; i < boatNameList.length ; i++){
+       /* for (int i = 0; i < boatNameList.length ; i++){
             if (player1Boat.get(boatNameList[i]).alive){
                 isPlayer1Alive = true;
             }
@@ -496,15 +500,15 @@ public class GameBoard {
             if (player2Boat.get(boatNameList[i]).alive){
                 isPlayer2Alive = true;
             }
-        }
-/*
+        }*/
+
         if (player1Boat.get("ContreTorpilleur").alive){
             isPlayer1Alive = true;
         }
         print(player2Boat.get("Porte Avion").alive);
         if (player2Boat.get("Porte Avion").alive){
             isPlayer2Alive = true;
-        }*/
+        }
 
         if (isPlayer1Alive && isPlayer2Alive) {
             return false;
