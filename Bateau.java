@@ -25,9 +25,9 @@ public abstract class Bateau
 
     public int[][] boatInRange(){
 
-        int k = 0;
         int[][] posRange;
         if (shootingDirection.equals( "Transverse")) {
+            int k = 0;
             posRange = new int[cases * 2 * shootingRange][2];
 
             for (int i = 0; i < cases; i++) {
@@ -57,25 +57,40 @@ public abstract class Bateau
         } else{
 
             posRange = new int[2 * shootingRange][2];
+            int k = 0;
+            System.out.println(posRange.length);
+            System.out.println(pos.length);
             for (int i = 0; i < shootingRange; i++) {
                 if (orientation == 'h') {
 
-                    posRange[k][0] = pos[i][0]+ i + 1;
-                    posRange[k][1] = pos[i][1] ;
+                    posRange[k][0] = pos[pos.length-1][0]+ i + 1;
+                    posRange[k][1] = pos[pos.length-1][1] ;
                     k++;
-                    posRange[k][0] = pos[i][0]- (i + 1);
-                    posRange[k][1] = pos[i][1] ;
+                    posRange[k][0] = pos[0][0]- (i + 1);
+                    posRange[k][1] = pos[0][1] ;
                     k++;
 
                 }
                 if (orientation == 'v') {
-                    posRange[k][0] = pos[i][0] ;
-                    posRange[k][1] = pos[i][1]+ i + 1;
-                    k++;
-                    posRange[k][0] = pos[i][0] - (i + 1);
-                    posRange[k][1] = pos[i][1];
-                    k++;
 
+                    if (pos[0][1] > pos[pos.length-1][1]){
+
+                        posRange[k][0] = pos[0][0] ;
+                        posRange[k][1] = pos[0][1]+ i + 1;
+                        k++;
+                        posRange[k][0] = pos[pos.length-1][0];
+                        posRange[k][1] = pos[pos.length-1][1] - (i + 1);
+                        k++;
+
+                    }
+                    else{
+                        posRange[k][0] = pos[0][0] ;
+                        posRange[k][1] = pos[0][1] - (i + 1);
+                        k++;
+                        posRange[k][0] = pos[pos.length-1][0];
+                        posRange[k][1] = pos[pos.length-1][1] + i + 1;
+                        k++;
+                    }
                 }
             }
 
