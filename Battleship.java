@@ -11,6 +11,13 @@ public class Battleship {
         // "2" for test
         //"1" will be available if we make a bot
         GameBoard.init("2");
+        int isFinished = 0;
+        int actualPlayer = 0;
+        while (isFinished == 0 ){
+
+            isFinished = GameBoard.shoot(actualPlayer);
+            actualPlayer = (actualPlayer +1)%2;
+        }
         //TODO Gameloop
 
 
@@ -33,7 +40,7 @@ public class Battleship {
 
         Scanner sc  = new Scanner(System.in);
         while (continu == 1) {
-            print("Voulez vous jouez seul ou avec un deuxième personne (répondez 1 ou 2)");
+            print("Voulez vous jouez seul ou avec une deuxième personne (répondez 1 ou 2)");
             switch(sc.next()){
                 case "1": game(1);
                 fin(sc);
