@@ -334,9 +334,9 @@ public class GameBoard {
 
                 }
 
-                if(!testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientation, boat)){
+                if(!testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientationToInt() , boat)){
                     boat = tempBoat.copy();
-                    testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientation, boat);
+                    testLocation(boat.pos[0][0], boat.pos[0][1], boat.orientationToInt() , boat);
                     print("Ce mouvement est obstrué");
 
                 }
