@@ -160,49 +160,52 @@ public class GameBoard {
         int length = boat.cases;
         print(length);
         boolean free = true;
-        if (orientation == 0) {
-            int i ;
-            for (i = x; i < x + length; i++) {
-                if ((i <= max + abs(min)) && (i >= 0)) {
-                    if (gameBoardArray[i][y] != null) {
-                        free = false;
-                    }
-                } else {
-                    free = false;
-                }
-            }
-            if (free) {
-                int j = 0;
+        if ((x>=min) && (y>= min) && (x<= max) && (y <= max)){
+            if (orientation == 0)  {
+                int i ;
                 for (i = x; i < x + length; i++) {
-                    gameBoardArray[i][y] = boat;
-                    boat.pos[j][0] = i;
-                    boat.pos[j][1] = y;
-                    boat.orientation = 'h';
-                    j++;
-                }
-            }
-        } else {
-            int i ;
-            for (i = y; i < y + length; i++) {
-                if ((i < max + abs(min)) && (i >= 0)) {
-                    if (gameBoardArray[x][i] != null) {
+                    if ((i <= max + abs(min)) && (i >= 0)) {
+                        if (gameBoardArray[i][y] != null) {
+                            free = false;
+                        }
+                    } else {
                         free = false;
                     }
-                } else {
-                    free = false;
                 }
-            }
-            if (free) {
-                int j = 0;
+                if (free) {
+                    int j = 0;
+                    for (i = x; i < x + length; i++) {
+                        gameBoardArray[i][y] = boat;
+                        boat.pos[j][0] = i;
+                        boat.pos[j][1] = y;
+                        boat.orientation = 'h';
+                        j++;
+                    }
+                }
+            } else {
+                int i ;
                 for (i = y; i < y + length; i++) {
-                    gameBoardArray[x][i] = boat;
-                    boat.pos[j][0] = x;
-                    boat.pos[j][1] = i;
-                    boat.orientation = 'v';
-                    j++;
+                    if ((i < max + abs(min)) && (i >= 0)) {
+                        if (gameBoardArray[x][i] != null) {
+                            free = false;
+                        }
+                    } else {
+                        free = false;
+                    }
+                }
+                if (free) {
+                    int j = 0;
+                    for (i = y; i < y + length; i++) {
+                        gameBoardArray[x][i] = boat;
+                        boat.pos[j][0] = x;
+                        boat.pos[j][1] = i;
+                        boat.orientation = 'v';
+                        j++;
+                    }
                 }
             }
-        }
+        }else free = false;
+
         return free;
     }
 
