@@ -39,7 +39,7 @@ public class Battleship {
     public static void main(String[] args) {
 
         Scanner sc  = new Scanner(System.in);
-        
+
         while (continu == 1) {
 
            game(2);
@@ -48,5 +48,4 @@ public class Battleship {
             }
         }
     }
-}
 
