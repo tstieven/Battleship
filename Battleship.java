@@ -39,16 +39,12 @@ public class Battleship {
     public static void main(String[] args) {
 
         Scanner sc  = new Scanner(System.in);
+        
         while (continu == 1) {
-            print("Voulez vous jouez seul ou avec une deuxième personne (répondez 1 ou 2)");
-            switch(sc.next()){
-                case "1": game(1);
-                fin(sc);
-                break;
 
-                case "2": game(2);
-                fin(sc);
-                break;
+           game(2);
+           fin(sc);
+
             }
         }
     }
